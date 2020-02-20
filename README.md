@@ -4,7 +4,10 @@ This is a (NLP + supervised learning) project at Insight Data Science.
 This is a consulted project with early-stage silicon valley company. **Therefore, all the data and most of the codes are confidential, which can't be public.** I do apologize for any unclear workflow. This repo will talk about the matching idea and only show the code for feature extraction by different embeddings.
 
 ## Motivation for this project:
-There is a matching problem between your resume and job postings.
+There is a matching problem between your resume and multiple job postings.
+<p float = 'left'>
+ <img src="images/matching.PNG" width='600' />
+</p>
 
 The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
 
