@@ -9,7 +9,7 @@ There is a matching problem between your resume and multiple job postings.
  <img src="images/matching.png" width='400' />
 </p>
 
-The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
+The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.Here is my demo [slide](https://docs.google.com/presentation/d/1DZlsdj4RcO-QVKHWMBJ7rOYT0hcFW0CXuYdlA_20NC0/edit#slide=id.g6eb23e549c_0_11), which will give you more information about this project.
 
 ### Conceptual Demo for the B2B Product
 - **Input**: HR's job requirement and candidate's information
