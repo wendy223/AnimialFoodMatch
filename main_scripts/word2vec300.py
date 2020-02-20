@@ -28,32 +28,18 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import datasets, linear_model
 from sklearn import tree
-import xgboost as xgb
+# import xgboost as xgb
 from sklearn.svm import SVC
 
 # import word2vec model
 import gensim
 
-
-# load train,validate, and test data; which was split before
-train_txt = pd.read_csv('data/ml/fasttext.golden.train.txt', sep='\t')  # 70% of the data
-validate_txt = pd.read_csv('data/ml/fasttext.golden.validation.txt', sep='\t')  # 15% of the data
-test_txt = pd.read_csv('data/ml/fasttext.golden.test.txt', sep='\t')      # 15% of the data
-print('train_txt shape:',train_txt.shape)
-
-
-lr= linear_model.LogisticRegression() 
-rf = RandomForestClassifier()
-dt = tree.DecisionTreeClassifier()
-xgb_clf = xgb.XGBClassifier()
-
-
 def classification(x_train, y_train, x_test, y_test, clf):
-    # train the model using the training sets 
-    clf.fit(x_train, y_train) 
+    # train the model using the training sets
+    clf.fit(x_train, y_train)
 
-    # making predictions on the validation set 
-    y_pred = clf.predict(x_test) 
+    # making predictions on the validation set
+    y_pred = clf.predict(x_test)
     confusion_mat = confusion_matrix(y_test, y_pred)
 
     # Model Accuracy, how often is the classifier correct?
@@ -63,8 +49,8 @@ def classification(x_train, y_train, x_test, y_test, clf):
     print('Confusion_mat:', confusion_mat)
 
 
-def word_embedding(data_txt, length_row):
-#     length_row = data_txt.shape[0]   
+def word_embedding(model, data_txt, length_row):
+#     length_row = data_txt.shape[0]
     matrix = np.zeros((length_row,300))
     label = [0] *length_row
     for i in range(length_row):
@@ -72,7 +58,7 @@ def word_embedding(data_txt, length_row):
         for words in each_row:
             for j,word in enumerate(words):
                 if j ==0:
-                    if word == '__label__submission':
+                    if word == '__label__match':
                         label[i] = 1
                     continue
 
@@ -94,27 +80,34 @@ def word_embedding(data_txt, length_row):
                 matrix[i,:] += string_word
             matrix[i,:] /= len(words)
 
-    word2vec_df = pd.DataFrame(matrix)  
+    word2vec_df = pd.DataFrame(matrix)
     print(word2vec_df.shape)
     print(len(label))
-    
+
     return word2vec_df, label
 
 
 if __name__ == "__main__":
-    
+
+    # All the classifiers we used here
+    lr= linear_model.LogisticRegression()
+    rf = RandomForestClassifier()
+    dt = tree.DecisionTreeClassifier()
+    # xgb_clf = xgb.XGBClassifier()
+
+    # load train,validate, and test data; which was split before
+    print('test1')
+    output_txt = pd.read_csv('../data/processed/output.txt', sep='\t')  # all of the data
+
     # word2vec model for 300 dimension
     model = gensim.models.KeyedVectors.load_word2vec_format('./enwiki_20180420_300d.txt',binary=False,limit=500000)
-    
+
     # word2vec model for 100 dimension
 #     model = gensim.models.KeyedVectors.load_word2vec_format('./enwiki_20180420_100d.txt',binary=False,limit=500000)
-    
-    x_train, y_train = word_embedding(train_txt,train_txt.shape[0])
-    print(x_train.head(1),len(y_train))
 
-    x_validate, y_validate = word_embedding(validate_txt, validate_txt.shape[0])
+    X, y = word_embedding(model, output_txt,output_txt.shape[0])
 
-    x_test, y_test = word_embedding(test_txt, test_txt.shape[0])
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
-    classification(x_train, y_train, x_validate, y_validate, lr)
-    classification(x_train, y_train, x_test, y_test, lr)
+    classification(X_train, y_train, X_test, y_test, lr)
+    classification(X_train, y_train, X_test, y_test, rf)

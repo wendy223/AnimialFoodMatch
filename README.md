@@ -3,11 +3,14 @@ This is a (NLP + supervised learning) project at Insight Data Science.
 
 ## Motivation for this project:
 There is a matching problem between your resume and job postings.
+
 The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
+
 
 <p float = 'left'>
  <img src="images/final_demo.gif" width='800' />
 </p>
+
 
 - **main_scripts** : Put all source code for production within structured directory
 - **tests** : Put all source code for testing in an easy to find location
@@ -16,57 +19,47 @@ The solution for this problem is to use NLP and supervised learning to predict w
 - **build** : Include scripts that automate building of a standalone environment
 - **static** : Any images or content to include in the README or web framework if part of the pipeline
 
-## Setup
-Clone repository and update python path
-```
-git clone https://github.com/$username/$repo_name
-source ~/.bash_profile
-```
-
-Create new development branch and switch onto it
-```
-git checkout -b $branch_name
-```
 
 ## Requisites
 
-- List all packages and software needed to build the environment
-- This could include cloud command line tools (i.e. gsutil), package managers (i.e. conda), etc.
+Here are all packages and software needed to build the environment
 
 #### Dependencies
 
 - [Streamlit](streamlit.io)
+- pip=19.3.1
+- python=3.7.3
+- setuptools=44.0.0
+- scikit-learn=0.21.2
+- conda=4.8.2
+- pip:
+  - nltk==3.4.1
+  - numpy==1.16.4
+  - pandas==0.24.2
+  - regex==2020.1.8
+  - gensim==3.8.1
 
-#### Installation
-To install the package above, pleae run:
-```shell
-pip install -r requiremnts
+### Pre-trained embedding models
+#### Word2Vec
+word2vec is word embedding, which represents the word with vectors.
+```
+import gensim
+model = gensim.models.KeyedVectors.load_word2vec_format('./enwiki_20180420_300d.txt',binary=False,limit=500000)
 ```
 
-## Build Environment
-- Include instructions of how to launch scripts in the build subfolder
-- Build scripts can include shell scripts or python setup.py files
-- The purpose of these scripts is to build a standalone environment, for running the code in this repository
-- The environment can be for local use, or for use in a cloud environment
-- If using for a cloud environment, commands could include CLI tools from a cloud provider (i.e. gsutil from Google Cloud Platform)
-```
-# Example
+#### Bert:SentenceTransformer
+BERT is a state-of-the-art pre-trained model that can be used to derive sentence embeddings. Please follow this [link](https://github.com/UKPLab/sentence-transformers) to download these models.
 
-# Step 1
-# Step 2
+Two models are used here.
+-bert-base-nli-mean-tokens: BERT-base model with mean-tokens pooling.Trained on NLI data
+-bert-base-nli-stsb-mean-tokens:Trained on STS data
+You can use them in the following way:
 ```
+model = SentenceTransformer('name_of_model')
+for example: model = SentenceTransformer('bert-base-nli-mean-tokens')
+```
+
+
 
 ## Configs
-- We recommond using either .yaml or .txt for your config files, not .json
-- **DO NOT STORE CREDENTIALS IN THE CONFIG DIRECTORY!!**
-- If credentials are needed, use environment variables or HashiCorp's [Vault](https://www.vaultproject.io/)
-
-
-## Test
-- Include instructions for how to run all tests after the software is installed
-```
-# Example
-
-# Step 1
-# Step 2
-```
+- The configuration file is written as environment.yml

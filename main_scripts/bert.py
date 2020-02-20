@@ -28,35 +28,22 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import datasets, linear_model
 from sklearn import tree
-import xgboost as xgb
+# import xgboost as xgb
 from sklearn.svm import SVC
 
 
-# load train,validate, and test data; which was split before
-train_txt = pd.read_csv('data/ml/fasttext.golden.train.txt', sep='\t')  # 70% of the data
-validate_txt = pd.read_csv('data/ml/fasttext.golden.validation.txt', sep='\t')  # 15% of the data
-test_txt = pd.read_csv('data/ml/fasttext.golden.test.txt', sep='\t')      # 15% of the data
-print('train_txt shape:',train_txt.shape)
-
-
-lr= linear_model.LogisticRegression() 
-rf = RandomForestClassifier()
-dt = tree.DecisionTreeClassifier()
-xgb_clf = xgb.XGBClassifier()
-
-
 def get_data_label(data_txt):
-    length_row = data_txt.shape[0]   
+    length_row = data_txt.shape[0]
     y_label = [0] *length_row
     for i in range(length_row):
         each_row_label = data_txt.loc[i].str.split().tolist()[0][0]
-        if each_row_label == '__label__submission':
+        if each_row_label == '__label__match':
             y_label[i] = 1
     return y_label
 
 # feature extraction by BERT
 def bert_embedding(data_txt, embedding_model):
-    length_row = data_txt.shape[0]   
+    length_row = data_txt.shape[0]
 
     sentences =[]
     for i in range(length_row):
@@ -71,17 +58,17 @@ def bert_embedding(data_txt, embedding_model):
         sentences_bert_list.append(embedding.tolist())
 
     x_data_bert = pd.DataFrame(sentences_bert_list) #df
-    
+
     return x_data_bert
 
-# train the model by different classifiers 
+# train the model by different classifiers
 # validate the model
 def classification(x_train, y_train, x_test, y_test, clf):
-    # train the model using the training sets 
-    clf.fit(x_train, y_train) 
+    # train the model using the training sets
+    clf.fit(x_train, y_train)
 
-    # making predictions on the validation set 
-    y_pred = clf.predict(x_test) 
+    # making predictions on the validation set
+    y_pred = clf.predict(x_test)
 
     # Model Accuracy, how often is the classifier correct?
     print('Classifier:', clf)
@@ -90,30 +77,30 @@ def classification(x_train, y_train, x_test, y_test, clf):
 
 
 if __name__ == "__main__":
-    
+
+    # All the classifiers we used here
+    lr= linear_model.LogisticRegression()
+    rf = RandomForestClassifier()
+    dt = tree.DecisionTreeClassifier()
+    # xgb_clf = xgb.XGBClassifier()
+
+    # load train,validate, and test data; which was split before
+    print('test1')
+    output_txt = pd.read_csv('../data/processed/output.txt', sep='\t')  # all of the data
+
     # BERT model named 'bert-base-nli-stsb-mean-tokens'
     model_stsb = SentenceTransformer('bert-base-nli-stsb-mean-tokens')  # mean --> max
-    
+    x_model_stsb = bert_embedding(output_txt,model_stsb)
+    y = get_data_label(output_txt)
+
 #     # bert model named 'bert-base-nli-mean-tokens'
-#     model = SentenceTransformer('bert-base-nli-mean-tokens') 
+#     model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-    x_train_model_stsb = bert_embedding(train_txt,model_stsb)
-    x_validate_model_stsb = bert_embedding(validate_txt,model_stsb)
-    x_test_model_stsb =  bert_embedding(test_txt,model_stsb)
+    X_train, X_test, y_train, y_test = train_test_split(x_model_stsb, y, test_size=0.33, random_state=42)
 
-    #x_train_model_stsb.to_csv('x_train_model_stsb.csv')
-    #x_train_model_stsb = pd.read_csv('x_train_model_stsb.csv').iloc[:, 1:]
-    
-    #x_test_model_stsb.to_csv('x_test_model_stsb.csv')
-    #x_test_model_stsb = pd.read_csv('x_test_model_stsb.csv').iloc[:, 1:]
-    #x_test_model_stsb = x_validate_model_stsb.append(x_test_model_stsb, ignore_index=True)
-    #y_test = y_validate + y_test
+    print('train_txt shape:',X_train.shape)
 
-    y_train = get_data_label(train_txt)
-    y_validate = get_data_label(validate_txt)
-    y_test = get_data_label(test_txt)
-
-    classification(x_train_model_stsb, y_train, x_test_model_stsb, y_test, lr)
-    classification(x_train_model_stsb, y_train, x_test_model_stsb, y_test, rf)
-    classification(x_train_model_stsb, y_train, x_test_model_stsb, y_test, dt)
-    classification(x_train_model_stsb, y_train, x_test_model_stsb, y_test, xgb_clf)
+    classification(X_train, y_train, X_test, y_test, lr)
+    classification(X_train, y_train, X_test, y_test, rf)
+    classification(X_train, y_train, X_test, y_test, dt)
+    classification(X_train, y_train, X_test, y_test, xgb_clf)
