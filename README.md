@@ -16,6 +16,7 @@ The solution for this problem is to use NLP and supervised learning to predict w
  <img src="images/final_demo.gif" width='800' />
 </p>
 
+## File Descriptions
 - **build** : Include scripts that automate building of a standalone environment
 - **configs** : Enable modification of all preset variables within single directory (consisting of one or many config files for separate tasks)
 - **data** \
