@@ -1,126 +1,78 @@
-# Insight_Project_Framework
-Framework for machine learning projects at Insight Data Science.
+# Matching your Resume and Job Postings
+## Background
+This is a (NLP + supervised learning) project at Insight Data Science.
+This is a consulted project with early-stage silicon valley company. **Therefore, all the data and most of the codes are confidential, which can't be public.** I do apologize for any unclear workflow. This repo will talk about the matching idea and only show the code for feature extraction by different embeddings.
 
-## Motivation for this project format:
-- **Insight_Project_Framework** : Put all source code for production within structured directory
-- **tests** : Put all source code for testing in an easy to find location
+## Motivation for this project:
+There is a matching problem between your resume and multiple job postings.
+<p float = 'left'>
+ <img src="images/matching.png" width='400' />
+</p>
+
+The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
+
+### Conceptual Demo for the B2B Product
+- **Input**: HR's job requirement and candidate's information
+- **Output**: this product will surface the matched candidate
+
+<p float = 'left'>
+ <img src="images/final_demo.gif" width='800' />
+</p>
+
+## File Descriptions
 - **configs** : Enable modification of all preset variables within single directory (consisting of one or many config files for separate tasks)
-- **data** : Include example a small amount of data in the Github repository so tests can be run to validate installation
-- **build** : Include scripts that automate building of a standalone environment
-- **static** : Any images or content to include in the README or web framework if part of the pipeline
-
-## Setup
-Clone repository and update python path
-```
-repo_name=Insight_Project_Framework # URL of your new repository
-username=mrubash1 # Username for your personal github account
-git clone https://github.com/$username/$repo_name
-cd $repo_name
-echo "export $repo_name=${PWD}" >> ~/.bash_profile
-echo "export PYTHONPATH=$repo_name/src:${PYTHONPATH}" >> ~/.bash_profile
-source ~/.bash_profile
-```
-Create new development branch and switch onto it
-```
-branch_name=dev-readme_requisites-20180905 # Name of development branch, of the form 'dev-feature_name-date_of_creation'}}
-git checkout -b $branch_name
-```
-
-## Initial Commit
-Lets start with a blank slate: remove `.git` and re initialize the repo
-```
-cd $repo_name
-rm -rf .git   
-git init   
-git status
-```  
-You'll see a list of file, these are files that git doesn't recognize. At this point, feel free to change the directory names to match your project. i.e. change the parent directory Insight_Project_Framework and the project directory Insight_Project_Framework:
-Now commit these:
-```
-git add .
-git commit -m "Initial commit"
-git push origin $branch_name
-```
+- **data** \
+|- output.txt  # The actual data is highly confidential. Therefore, this is a fake txt to conceptually show what it contains and also check whether the code work or not
+- **images** : images include in the README
+- **main_scripts** \
+| - bert.py  # bert model\
+| - word2vec300.py  # word2vec model \
+| - tfidf.py  # term frequency  
+- **README.md**
 
 ## Requisites
 
-- List all packages and software needed to build the environment
-- This could include cloud command line tools (i.e. gsutil), package managers (i.e. conda), etc.
+Here are all packages and software needed to build the environment
 
 #### Dependencies
 
 - [Streamlit](streamlit.io)
+- pip=19.3.1
+- python=3.7.3
+- setuptools=44.0.0
+- scikit-learn=0.21.2
+- conda=4.8.2
+- pip:
+  - nltk==3.4.1
+  - numpy==1.16.4
+  - pandas==0.24.2
+  - regex==2020.1.8
+  - gensim==3.8.1
 
-#### Installation
-To install the package above, pleae run:
-```shell
-pip install -r requiremnts
+## Feature Extraction with Pre-trained Embedding Models
+### TF-IDF
+TF-IDF is short for term frequency–inverse document frequency, which is used to evaluate the importance of a term (feature) to each data point.
+
+### Word2Vec
+Word2vec is a word embedding model, which represents the word with vectors.
+To run the word2vec300.py file, you have to download the embedded model first online. Here is the [link](https://wikipedia2vec.github.io/wikipedia2vec/pretrained/) for the model.
+```
+import gensim
+model = gensim.models.KeyedVectors.load_word2vec_format('./enwiki_20180420_300d.txt',binary=False,limit=500000)
 ```
 
-## Build Environment
-- Include instructions of how to launch scripts in the build subfolder
-- Build scripts can include shell scripts or python setup.py files
-- The purpose of these scripts is to build a standalone environment, for running the code in this repository
-- The environment can be for local use, or for use in a cloud environment
-- If using for a cloud environment, commands could include CLI tools from a cloud provider (i.e. gsutil from Google Cloud Platform)
-```
-# Example
+### Bert:SentenceTransformer
+BERT is a state-of-the-art pre-trained model that can be used to derive sentence embeddings. Please follow this [link](https://github.com/UKPLab/sentence-transformers) to download these models first before running the bert.py.
 
-# Step 1
-# Step 2
+Two models are used here.
+-bert-base-nli-mean-tokens: BERT-base model with mean-tokens pooling.Trained on NLI data
+-bert-base-nli-stsb-mean-tokens:Trained on STS data
+You can use them in the following way:
 ```
+model = SentenceTransformer('name_of_model')
+for example: model = SentenceTransformer('bert-base-nli-mean-tokens')
+```
+
 
 ## Configs
-- We recommond using either .yaml or .txt for your config files, not .json
-- **DO NOT STORE CREDENTIALS IN THE CONFIG DIRECTORY!!**
-- If credentials are needed, use environment variables or HashiCorp's [Vault](https://www.vaultproject.io/)
-
-
-## Test
-- Include instructions for how to run all tests after the software is installed
-```
-# Example
-
-# Step 1
-# Step 2
-```
-
-## Run Inference
-- Include instructions on how to run inference
-- i.e. image classification on a single image for a CNN deep learning project
-```
-# Example
-
-# Step 1
-# Step 2
-```
-
-## Build Model
-- Include instructions of how to build the model
-- This can be done either locally or on the cloud
-```
-# Example
-
-# Step 1
-# Step 2
-```
-
-## Serve Model
-- Include instructions of how to set up a REST or RPC endpoint
-- This is for running remote inference via a custom model
-```
-# Example
-
-# Step 1
-# Step 2
-```
-
-## Analysis
-- Include some form of EDA (exploratory data analysis)
-- And/or include benchmarking of the model and results
-```
-# Example
-
-# Step 1
-# Step 2
-```
+- The configuration file is written as environment.yml
