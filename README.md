@@ -1,7 +1,7 @@
 # Matching your Resume and Job Postings
 ## Background
 This is a (NLP + supervised learning) project at Insight Data Science.
-This is a consulted project with early-stage silicon valley company. Therefore, all the data and most of the codes are confidential, which can't be public. I do apologize for any unclear workflow. This repo will talk about the matching idea and only show the code for feature extraction by different embeddings.
+This is a consulted project with early-stage silicon valley company. **Therefore, all the data and most of the codes are confidential, which can't be public.** I do apologize for any unclear workflow. This repo will talk about the matching idea and only show the code for feature extraction by different embeddings.
 
 ## Motivation for this project:
 There is a matching problem between your resume and job postings.
@@ -49,6 +49,8 @@ Here are all packages and software needed to build the environment
   - gensim==3.8.1
 
 ## Feature Extraction with Pre-trained Embedding Models
+### TF-IDF
+TF-IDF is short for term frequency–inverse document frequency, which is used to evaluate the importance of a term (feature) to each data point.
 
 ### Word2Vec
 Word2vec is a word embedding model, which represents the word with vectors.
