@@ -6,7 +6,7 @@ This is a consulted project with early-stage silicon valley company. **Therefore
 ## Motivation for this project:
 There is a matching problem between your resume and multiple job postings.
 <p float = 'left'>
- <img src="images/matching.PNG" width='600' />
+ <img src="images/matching.png" width='400' />
 </p>
 
 The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
