@@ -5,6 +5,10 @@ This is a (NLP + supervised learning) project at Insight Data Science.
 There is a matching problem between your resume and job postings.
 The solution for this problem is to use NLP and supervised learning to predict whether the resume will match or not match the responding job postings.
 
+<p float = 'left'>
+ <img src="images/final_demo.gif" width='800' />
+</p>
+
 - **main_scripts** : Put all source code for production within structured directory
 - **tests** : Put all source code for testing in an easy to find location
 - **configs** : Enable modification of all preset variables within single directory (consisting of one or many config files for separate tasks)
