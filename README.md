@@ -20,7 +20,6 @@ The solution for this problem is to use NLP and supervised learning to predict w
 </p>
 
 ## File Descriptions
-- **build** : Include scripts that automate building of a standalone environment
 - **configs** : Enable modification of all preset variables within single directory (consisting of one or many config files for separate tasks)
 - **data** \
 |- output.txt  # The actual data is highly confidential. Therefore, this is a fake txt to conceptually show what it contains and also check whether the code work or not
@@ -30,7 +29,6 @@ The solution for this problem is to use NLP and supervised learning to predict w
 | - word2vec300.py  # word2vec model \
 | - tfidf.py  # term frequency  
 - **README.md**
-- **tests** : Put all source code for testing in an easy to find location
 
 ## Requisites
 
